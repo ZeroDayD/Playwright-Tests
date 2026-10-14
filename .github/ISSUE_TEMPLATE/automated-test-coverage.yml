@@ -1,0 +1,96 @@
+name: Automated test coverage
+description: Request requirement-driven Playwright coverage.
+title: "[QA coverage]: "
+labels:
+  - qa-automation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe one testable requirement. Complete inputs let the QA orchestrator plan coverage without a clarification round.
+
+  - type: input
+    id: feature
+    attributes:
+      label: Feature name
+      description: Name the product area or user flow.
+      placeholder: Shopping cart quantity update
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirement
+    attributes:
+      label: Requirement
+      description: State the user-visible behavior to validate.
+      placeholder: A user can update the quantity of an item in the shopping cart.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Enter one independently verifiable outcome per line.
+      placeholder: |
+        - Quantity can be increased and decreased.
+        - Total price is recalculated.
+        - Quantity cannot become lower than 1.
+    validations:
+      required: true
+
+  - type: input
+    id: application-route
+    attributes:
+      label: Application URL or route
+      description: Provide the safest route the agent may explore.
+      placeholder: /
+    validations:
+      required: true
+
+  - type: dropdown
+    id: test-scope
+    attributes:
+      label: Test scope
+      description: Select the primary requested coverage.
+      options:
+        - Web UI / Chromium
+        - Web UI / cross-browser
+        - API
+        - UI and API
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: List behavior that should not be planned or generated.
+      placeholder: Checkout, payment, and inventory reservation.
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Select the target environment.
+      options:
+        - Local demo application
+        - Development
+        - Staging
+        - Production read-only
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add test data, screenshots, dependencies, or known constraints.
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: The requested checks do not submit real purchases or make destructive production changes.
+          required: true

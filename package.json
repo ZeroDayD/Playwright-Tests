@@ -1,0 +1,26 @@
+{
+  "name": "agentic-qa-playwright",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A reproducible, agent-assisted QA workflow with Playwright and deterministic CI.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "validate": "npm run typecheck && npm run build && npm test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2",
+    "vite": "8.3.4"
+  }
+}
