@@ -15,20 +15,32 @@ Planner, Generator, or Healer.
 
 ## Lifecycle
 
-1. Ask `playwright-test-planner` to create `specs/issues/<issue-number>-<slug>.plan.md` from the Issue and
-   `tests/seed.spec.ts`. Do not write the plan yourself.
-2. Confirm that the plan cites the Issue and preserves every in-scope acceptance criterion.
-3. Ask `playwright-test-generator` to implement the plan as `tests/issues/<issue-number>-<slug>.spec.ts`. Do not write
+1. Inspect existing automated coverage before planning anything new. Search the current tests, Page Objects, fixtures,
+   and test data for behavior relevant to every in-scope acceptance criterion. Verify coverage from actual assertions
+   and observable behavior, not from file names or test titles alone.
+2. Classify the coverage state:
+   - **Fully covered** — every in-scope acceptance criterion is already exercised by meaningful assertions. Run the
+     relevant existing test or tests when practical, then stop and report **No additional coverage required** with the
+     supporting test paths and validation result. Do not create a new plan or test merely to produce a change, and do
+     not close the Issue automatically.
+   - **Partially covered** — record which criteria are already covered and continue only for the missing coverage.
+   - **Not covered** — continue with the full requested coverage.
+3. Ask `playwright-test-planner` to create `specs/issues/<issue-number>-<slug>.plan.md` from the Issue,
+   `tests/seed.spec.ts`, and the uncovered-criteria summary. Do not write the plan yourself and do not duplicate
+   scenarios already proven by existing coverage.
+4. Confirm that the plan cites the Issue, identifies any pre-existing coverage, and preserves every uncovered in-scope
+   acceptance criterion.
+5. Ask `playwright-test-generator` to implement the plan as `tests/issues/<issue-number>-<slug>.spec.ts`. Do not write
    the generated tests yourself.
-4. Run the focused test, then run `npm run validate` as the independent local quality gate.
-5. If a test fails, classify it as a test implementation issue, locator/synchronization issue,
+6. Run the focused test, then run `npm run validate` as the independent local quality gate.
+7. If a test fails, classify it as a test implementation issue, locator/synchronization issue,
    environment/infrastructure issue, or probable product defect.
-6. Ask `playwright-test-healer` to make a change only for a test implementation or locator/synchronization issue. For an
+8. Ask `playwright-test-healer` to make a change only for a test implementation or locator/synchronization issue. For an
    environment issue, report the blocker. For a probable product defect, preserve the failing test and report expected
    versus actual behavior.
-7. Rerun the focused test and `npm run validate` after any permitted healing change.
-8. Prepare or update a pull request with the Issue reference, plan and test paths, exact validation commands and results,
-   failure classification, and healing details. Request human review.
+9. Rerun the focused test and `npm run validate` after any permitted healing change.
+10. Prepare or update a pull request with the Issue reference, plan and test paths, exact validation commands and
+    results, failure classification, and healing details. Request human review.
 
 If the current host cannot invoke another custom agent, stop at that handoff and state which named agent and artifact
 must be run next. Do not impersonate or duplicate the specialist.
