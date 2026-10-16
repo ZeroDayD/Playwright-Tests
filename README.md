@@ -11,7 +11,9 @@ GitHub Actions decide whether the checks pass; a human decides whether a pull re
 ```mermaid
 flowchart LR
     issue[Structured GitHub Issue] --> assign{Human assigns the<br/>QA Orchestrator}
-    assign -. AI-assisted .-> planner[Playwright Planner]
+    assign -. AI-assisted .-> coverage{Inspect existing<br/>automated coverage}
+    coverage -- Fully covered --> nochange[Report no additional<br/>coverage required]
+    coverage -- Gap found --> planner[Playwright Planner]
     planner --> plan[Versioned Markdown plan]
     plan -. AI-assisted .-> generator[Playwright Generator]
     generator --> tests[Playwright tests]
@@ -124,13 +126,16 @@ actually needs one.
 1. Create an **Automated test coverage** Issue and complete every required field.
 2. Assign the Issue to GitHub Copilot and select the `qa-orchestrator` custom agent. Issue assignment creates a pull
    request and requests human review when the agent finishes.
-3. The Orchestrator validates the request and hands planning to `playwright-test-planner`.
-4. The Planner explores from `tests/seed.spec.ts` and writes `specs/issues/<number>-<slug>.plan.md`.
-5. The Orchestrator hands that plan to `playwright-test-generator`, which creates the matching Issue test.
-6. The generated test runs. Every failure is classified before any healing is attempted.
-7. Only test implementation and locator/synchronization failures may be handed to `playwright-test-healer`.
-8. The pull request records its Issue, plan, test, validation result, classification, and any healing performed.
-9. GitHub Actions performs a fresh, independent execution. A human reviews and merges; agents never merge.
+3. The Orchestrator validates the request and inspects existing tests against every acceptance criterion.
+4. If the requirement is already fully covered, it reports **No additional coverage required** with evidence and stops
+   without creating duplicate coverage.
+5. If coverage is missing or partial, the Planner explores from `tests/seed.spec.ts` and writes
+   `specs/issues/<number>-<slug>.plan.md` for the uncovered behavior.
+6. The Orchestrator hands that plan to `playwright-test-generator`, which creates the matching Issue test.
+7. The generated test runs. Every failure is classified before any healing is attempted.
+8. Only test implementation and locator/synchronization failures may be handed to `playwright-test-healer`.
+9. The pull request records its Issue, plan, test, validation result, classification, and any healing performed.
+10. GitHub Actions performs a fresh, independent execution. A human reviews and merges; agents never merge.
 
 In an IDE or Copilot environment with subagent prompt support, run the
 `.github/prompts/playwright-test-coverage.prompt.md` prompt to chain the three Playwright specialists. If the current
@@ -139,8 +144,9 @@ instead of silently duplicating its responsibility.
 
 ## Agent responsibilities
 
-- **QA Orchestrator** validates Issue inputs, coordinates handoffs, runs quality gates, classifies failures, and prepares
-  the pull-request evidence. It does not write plans or generated tests itself.
+- **QA Orchestrator** validates Issue inputs, checks whether existing automation already covers the requested behavior,
+  coordinates handoffs for uncovered gaps, runs quality gates, classifies failures, and prepares pull-request evidence.
+  It does not write plans or generated tests itself.
 - **Planner** explores the permitted application route and converts acceptance criteria into a versioned Markdown plan.
 - **Generator** executes plan steps against the live app and creates traceable, accessible, assertion-rich tests.
 - **Healer** investigates evidence and edits tests only when the failure is demonstrably in test implementation,
