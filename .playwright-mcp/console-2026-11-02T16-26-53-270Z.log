@@ -1,0 +1,4 @@
+[    2372ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/_global-navigation/payloads.json?can_toggle_site_admin_and_employee_status=0&is_admin_mode_on=0&is_ui_opted_out=0&show_ui_opt_out=0&v=8:0
+[    2484ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/copilot/agent-sessions/ZeroDayD/Playwright-Tests/agents:0
+[    2559ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/ZeroDayD/Playwright-Tests/issues/1/agent_tasks:0
+[    2560ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/scribe/artifacts?resource_type=issue&resource_id=5845618770&page=1&per_page=30:0
