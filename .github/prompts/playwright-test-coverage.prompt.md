@@ -14,8 +14,13 @@ Parameters:
 test data for behavior relevant to every acceptance criterion. Verify coverage from actual assertions, not names alone.
 
 If every in-scope acceptance criterion is already covered, run the relevant existing test or tests when practical,
-report **No additional coverage required** with supporting test paths and the validation result, and stop. Do not create
-a plan, duplicate test, or pull-request change merely to produce output.
+then report **No additional coverage required** only after a successful run, with supporting test paths, exact commands,
+and results, and stop. If execution is unavailable, report coverage found by inspection, the reason it was not run, and
+validation as unverified; do not claim a passing result.
+If an existing test fails, classify it before stopping. Delegate only test implementation or locator/synchronization
+failures to #playwright-test-healer, then rerun the relevant tests and `npm run validate` after any permitted change.
+Preserve evidence for environment failures and probable product defects, and report unresolved failures or blockers
+instead of a successful no-change outcome. Do not create duplicate coverage or close the Issue automatically.
 
 If coverage is partial, record which criteria are already covered and carry only the uncovered criteria forward while
 preserving Issue traceability.
@@ -23,7 +28,10 @@ preserving Issue traceability.
 2. Call #playwright-test-planner subagent with prompt:
 
 <plan>
-  <task-text><!-- the task --></task-text>
+  <task-text><!-- Source Issue URL and number, original requirement, and all acceptance criteria --></task-text>
+  <existing-coverage><!-- Covered criteria mapped to test paths and supporting assertions; use none if absent --></existing-coverage>
+  <uncovered-criteria><!-- Explicit criteria requiring new coverage; all criteria if none are covered --></uncovered-criteria>
+  <planning-scope>Plan only uncovered criteria. Cite existing coverage and the source Issue in the plan.</planning-scope>
   <seed-file><!-- path to seed file --></seed-file>
   <plan-file><!-- path to test plan file to generate --></plan-file>
 </plan>

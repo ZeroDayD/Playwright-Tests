@@ -20,13 +20,17 @@ Planner, Generator, or Healer.
    and observable behavior, not from file names or test titles alone.
 2. Classify the coverage state:
    - **Fully covered** — every in-scope acceptance criterion is already exercised by meaningful assertions. Run the
-     relevant existing test or tests when practical, then stop and report **No additional coverage required** with the
-     supporting test paths and validation result. Do not create a new plan or test merely to produce a change, and do
-     not close the Issue automatically.
+     relevant existing test or tests when practical. On success, report **No additional coverage required** with
+     supporting test paths, exact commands, and results, then stop. If execution is unavailable, report coverage found
+     by inspection, the reason it was not run, and validation as unverified; do not claim a passing result.
+     If an existing test fails, apply the failure classification and guarded healing rules in steps 7–9 before stopping.
+     Preserve evidence and report unresolved failures or blockers instead of a successful no-change outcome.
+     Do not create duplicate coverage or close the Issue automatically.
    - **Partially covered** — record which criteria are already covered and continue only for the missing coverage.
    - **Not covered** — continue with the full requested coverage.
 3. Ask `playwright-test-planner` to create `specs/issues/<issue-number>-<slug>.plan.md` from the Issue,
-   `tests/seed.spec.ts`, and the uncovered-criteria summary. Do not write the plan yourself and do not duplicate
+   `tests/seed.spec.ts`, the covered-criteria evidence (test paths and supporting assertions), and an explicit list
+   of uncovered criteria. Do not write the plan yourself and do not duplicate
    scenarios already proven by existing coverage.
 4. Confirm that the plan cites the Issue, identifies any pre-existing coverage, and preserves every uncovered in-scope
    acceptance criterion.

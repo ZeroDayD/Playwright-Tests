@@ -127,8 +127,9 @@ actually needs one.
 2. Assign the Issue to GitHub Copilot and select the `qa-orchestrator` custom agent. Issue assignment creates a pull
    request and requests human review when the agent finishes.
 3. The Orchestrator validates the request and inspects existing tests against every acceptance criterion.
-4. If the requirement is already fully covered, it reports **No additional coverage required** with evidence and stops
-   without creating duplicate coverage.
+4. If the requirement is already fully covered, it validates the existing tests when practical and reports
+   **No additional coverage required** after a successful run. Unavailable execution is reported as unverified;
+   failures are classified and preserved or safely healed before stopping. It does not create duplicate coverage.
 5. If coverage is missing or partial, the Planner explores from `tests/seed.spec.ts` and writes
    `specs/issues/<number>-<slug>.plan.md` for the uncovered behavior.
 6. The Orchestrator hands that plan to `playwright-test-generator`, which creates the matching Issue test.
